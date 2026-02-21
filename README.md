@@ -1,4 +1,4 @@
-# Kube Doctor
+# kube-doctor-mcp
 
 Kubernetes cluster diagnostics for AI assistants. Two implementations, one goal: give Copilot (or any LLM) the ability to inspect and diagnose your Kubernetes cluster.
 
@@ -6,7 +6,7 @@ Kubernetes cluster diagnostics for AI assistants. Two implementations, one goal:
 
 | Project | Path | Approach | Tools |
 |---------|------|----------|-------|
-| **Go MCP Server** | `cluster-commander-mcp/` | Standalone binary, stdio transport (MCP protocol) | 27 |
+| **Go MCP Server** | root (`main.go`) | Standalone binary, stdio transport (MCP protocol) | 27 |
 | **VS Code Extension** | `kube-doctor-vscode/` | Native Language Model Tools API (no MCP dependency) | 11 |
 
 Both connect directly to the Kubernetes API via your kubeconfig. No kubectl dependency.
@@ -28,7 +28,6 @@ Both connect directly to the Kubernetes API via your kubeconfig. No kubectl depe
 ### Build
 
 ```bash
-cd cluster-commander-mcp
 go build -o kube-doctor .
 ```
 
@@ -115,8 +114,6 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
 ### Testing
 
 ```bash
-cd cluster-commander-mcp
-
 # Unit tests (no cluster required — uses fake clientset)
 go test ./...
 
@@ -232,7 +229,6 @@ kubectl create deployment broken --image=nginx:does-not-exist
 kubectl run crasher --image=busybox -- sh -c "exit 1"
 
 # Build and test
-cd cluster-commander-mcp
 go build -o kube-doctor .
 npx @modelcontextprotocol/inspector ./kube-doctor
 
@@ -245,25 +241,23 @@ k3d cluster delete kube-doctor-test
 ## Project Structure
 
 ```
-mcp-toys/
-├── README.md                              ← you are here
+kube-doctor-mcp/
+├── README.md
 ├── CLAUDE.md                              ← AI assistant instructions
-├── cluster-commander-instructions.md      ← Go MCP server build spec
-├── kube-doctor-vscode-extension-instructions.md  ← Extension build spec
-├── cluster-commander-mcp/                 ← Go MCP server
-│   ├── main.go
-│   ├── go.mod
-│   ├── pkg/
-│   │   ├── k8s/          ← Kubernetes client wrappers
-│   │   ├── tools/         ← MCP tool handlers
-│   │   └── util/          ← Formatting, filters, error helpers
-│   └── .vscode/mcp.json
+├── main.go                                ← Server entry point
+├── go.mod
+├── pkg/
+│   ├── k8s/                               ← Kubernetes client wrappers
+│   ├── tools/                             ← MCP tool handlers
+│   └── util/                              ← Formatting, filters, error helpers
+├── .vscode/mcp.json                       ← VS Code MCP config
 └── kube-doctor-vscode/                    ← VS Code extension
     ├── package.json
     ├── src/
     │   ├── extension.ts
-    │   ├── k8s/           ← Kubernetes client wrappers
-    │   ├── tools/          ← Language Model Tool implementations
-    │   └── util/           ← Formatting helpers
-    └── dist/extension.js   ← Bundled output
+    │   ├── k8s/                           ← Kubernetes client wrappers
+    │   ├── tools/                         ← Language Model Tool implementations
+    │   └── util/                          ← Formatting helpers
+    ├── kube-doctor-0.1.0.vsix             ← Pre-built extension
+    └── dist/extension.js                  ← Bundled output
 ```

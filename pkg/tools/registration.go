@@ -2,7 +2,7 @@ package tools
 
 import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
-	"github.com/patnel87/kube-doctor/pkg/k8s"
+	"github.com/pat-nel87/kube-doctor-mcp/pkg/k8s"
 )
 
 // RegisterAll registers all MCP tools with the server.

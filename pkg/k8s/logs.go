@@ -7,7 +7,7 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/patnel87/kube-doctor/pkg/util"
+	"github.com/pat-nel87/kube-doctor-mcp/pkg/util"
 )
 
 // GetPodLogs retrieves logs from a pod container.

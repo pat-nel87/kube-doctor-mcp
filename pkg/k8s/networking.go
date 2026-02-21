@@ -7,7 +7,7 @@ import (
 	networkingv1 "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/patnel87/kube-doctor/pkg/util"
+	"github.com/pat-nel87/kube-doctor-mcp/pkg/util"
 )
 
 // ListServices returns services in the given namespace.

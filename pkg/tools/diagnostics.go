@@ -10,8 +10,8 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/patnel87/kube-doctor/pkg/k8s"
-	"github.com/patnel87/kube-doctor/pkg/util"
+	"github.com/pat-nel87/kube-doctor-mcp/pkg/k8s"
+	"github.com/pat-nel87/kube-doctor-mcp/pkg/util"
 )
 
 type diagnosePodInput struct {

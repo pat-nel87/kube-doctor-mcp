@@ -1,4 +1,4 @@
-module github.com/patnel87/kube-doctor
+module github.com/pat-nel87/kube-doctor-mcp
 
 go 1.23.0
 

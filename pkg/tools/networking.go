@@ -7,8 +7,8 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"github.com/patnel87/kube-doctor/pkg/k8s"
-	"github.com/patnel87/kube-doctor/pkg/util"
+	"github.com/pat-nel87/kube-doctor-mcp/pkg/k8s"
+	"github.com/pat-nel87/kube-doctor-mcp/pkg/util"
 )
 
 type listServicesInput struct {

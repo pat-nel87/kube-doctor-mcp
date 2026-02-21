@@ -7,7 +7,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	metricsv1beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
 
-	"github.com/patnel87/kube-doctor/pkg/util"
+	"github.com/pat-nel87/kube-doctor-mcp/pkg/util"
 )
 
 // GetNodeMetrics returns resource usage metrics for all nodes.
