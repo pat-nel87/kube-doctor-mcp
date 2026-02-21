@@ -91,20 +91,24 @@ Follow this workflow when investigating Flux issues:
 | `diagnose_flux_system` | Flux installation health: controllers, CRD summary, system events |
 | `get_flux_resource_tree` | Dependency tree from Kustomization/HelmRelease through source to managed resources |
 
-### Core Kube-Doctor Tools (40 tools)
+### Core Kube-Doctor Tools (55 tools)
 
-You also have full access to all kube-doctor cluster diagnostics tools. Key ones for Flux investigation:
+You also have full access to all 55 non-Flux kube-doctor tools. Key ones for Flux investigation:
 
 | Tool | Flux Use Case |
 |------|---------------|
+| `cluster_health_overview` | Cluster-wide health dashboard including workload status |
 | `list_pods` | Check Flux controller pod health in flux-system |
 | `get_pod_logs` | Read controller logs for reconciliation errors |
+| `analyze_service_logs` | Aggregate logs across multiple Flux controller pods |
 | `get_events` | Flux-related Warning events |
 | `diagnose_pod` | Diagnose a failing Flux controller pod |
 | `diagnose_namespace` | Health check on flux-system namespace |
 | `list_crds` | Verify Flux CRDs are installed (filter by toolkit.fluxcd.io) |
 | `list_deployments` | Check Flux controller deployments |
-| `analyze_resource_allocation` | Controller resource usage |
+| `analyze_resource_usage` | Controller resource usage with Mermaid charts |
+| `analyze_resource_efficiency` | Check if Flux controllers are over/under-provisioned |
+| `check_dns_health` | Verify DNS resolution (Flux sources depend on cluster DNS) |
 
 ## Common Diagnostic Patterns
 

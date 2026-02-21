@@ -2,7 +2,7 @@
   "name": "kube-doctor",
   "displayName": "Kube Doctor",
   "description": "Kubernetes cluster diagnostics tools for GitHub Copilot — bypasses MCP policy restrictions",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "publisher": "patnel87",
   "engines": {
     "vscode": "^1.99.0"
@@ -1248,6 +1248,401 @@
           "required": [
             "namespace",
             "name"
+          ]
+        }
+      },
+      {
+        "name": "kube-doctor_mapServiceTopology",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "network"
+        ],
+        "toolReferenceName": "kubeMapServiceTopology",
+        "displayName": "Map Service Topology",
+        "modelDescription": "Map the full network topology for a namespace: services, backing pods, ingresses, and inter-service dependencies. Produces structured text plus a Mermaid flowchart showing Internet -> Ingresses -> Services -> Pods. Use when visualizing how traffic flows through a namespace.",
+        "userDescription": "Map the network topology of services, pods, and ingresses in a namespace.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(type-hierarchy)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Kubernetes namespace to map"
+            }
+          },
+          "required": [
+            "namespace"
+          ]
+        }
+      },
+      {
+        "name": "kube-doctor_traceIngressToBackend",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "network"
+        ],
+        "toolReferenceName": "kubeTraceIngressToBackend",
+        "displayName": "Trace Ingress to Backend",
+        "modelDescription": "Trace the full request path from a hostname+path through Ingress -> Service -> Endpoints -> Pods. Checks AGIC annotations, backend service health, pod status, and metrics. Produces a layered trace report plus a Mermaid sequence diagram. Use to debug 502/503/504 errors or routing issues.",
+        "userDescription": "Trace an HTTP request path from ingress through service to backend pods.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(debug-step-into)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "hostname": {
+              "type": "string",
+              "description": "Hostname to trace (e.g. api.example.com)"
+            },
+            "path": {
+              "type": "string",
+              "description": "URL path to trace (e.g. /api/v1)"
+            }
+          },
+          "required": [
+            "hostname",
+            "path"
+          ]
+        }
+      },
+      {
+        "name": "kube-doctor_listEndpointHealth",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "network"
+        ],
+        "toolReferenceName": "kubeListEndpointHealth",
+        "displayName": "List Endpoint Health",
+        "modelDescription": "Check endpoint health for every service in a namespace. Classifies services as HEALTHY, DEGRADED (partial endpoints), or DEAD (zero ready endpoints). Use to quickly find services that cannot serve traffic.",
+        "userDescription": "Check endpoint health status for all services in a namespace.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(pulse)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Kubernetes namespace"
+            }
+          },
+          "required": [
+            "namespace"
+          ]
+        }
+      },
+      {
+        "name": "kube-doctor_analyzeServiceConnectivity",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "network"
+        ],
+        "toolReferenceName": "kubeAnalyzeServiceConnectivity",
+        "displayName": "Analyze Service Connectivity",
+        "modelDescription": "Comprehensive connectivity analysis for a specific service: existence, selector matches, endpoints, port mappings, NetworkPolicies, and Ingress exposure. Produces a connectivity report with Mermaid flowchart. Use to debug why a service is unreachable.",
+        "userDescription": "Analyze connectivity and reachability for a Kubernetes service.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(plug)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Kubernetes namespace"
+            },
+            "service_name": {
+              "type": "string",
+              "description": "Service name to analyze"
+            }
+          },
+          "required": [
+            "namespace",
+            "service_name"
+          ]
+        }
+      },
+      {
+        "name": "kube-doctor_analyzeAllIngresses",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "network"
+        ],
+        "toolReferenceName": "kubeAnalyzeAllIngresses",
+        "displayName": "Analyze All Ingresses",
+        "modelDescription": "Audit every Ingress in a namespace: AGIC annotations, backend service health, TLS configuration, and conflicting host/path rules. Use for pre-deployment or post-incident ingress review.",
+        "userDescription": "Audit all ingress configurations in a namespace.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(globe)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Kubernetes namespace"
+            }
+          },
+          "required": [
+            "namespace"
+          ]
+        }
+      },
+      {
+        "name": "kube-doctor_checkAGICHealth",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "network",
+          "azure"
+        ],
+        "toolReferenceName": "kubeCheckAGICHealth",
+        "displayName": "Check AGIC Health",
+        "modelDescription": "Check health of Azure Application Gateway Ingress Controller (AGIC). Finds AGIC pods, checks status, restarts, recent logs for errors, and ConfigMap. Use when ingress routing through Azure Application Gateway is failing.",
+        "userDescription": "Check Azure Application Gateway Ingress Controller health.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(cloud)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      },
+      {
+        "name": "kube-doctor_analyzeResourceUsage",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "resources"
+        ],
+        "toolReferenceName": "kubeAnalyzeResourceUsage",
+        "displayName": "Analyze Resource Usage",
+        "modelDescription": "Analyze actual CPU/memory usage vs requests and limits for every pod in a namespace. Shows utilization percentages, flags over-provisioned and under-provisioned pods. Includes Mermaid chart of top consumers. Requires metrics-server.",
+        "userDescription": "Compare actual pod resource usage against requests and limits.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(graph)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Kubernetes namespace"
+            }
+          },
+          "required": [
+            "namespace"
+          ]
+        }
+      },
+      {
+        "name": "kube-doctor_analyzeNodeCapacity",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "resources"
+        ],
+        "toolReferenceName": "kubeAnalyzeNodeCapacity",
+        "displayName": "Analyze Node Capacity",
+        "modelDescription": "Analyze capacity, allocatable resources, actual usage, and pod counts for every node. Flags nodes over 80% utilization. Includes Mermaid bar chart of node utilization. Requires metrics-server.",
+        "userDescription": "Analyze resource capacity and utilization for all cluster nodes.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(server)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      },
+      {
+        "name": "kube-doctor_analyzeResourceEfficiency",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "resources"
+        ],
+        "toolReferenceName": "kubeAnalyzeResourceEfficiency",
+        "displayName": "Analyze Resource Efficiency",
+        "modelDescription": "Analyze resource efficiency cluster-wide or per namespace. Calculates waste (requests minus actual usage), efficiency percentages, and per-namespace breakdown. Use to identify over-provisioned workloads and optimize costs.",
+        "userDescription": "Identify wasted resources by comparing requests to actual usage.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(dashboard)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Kubernetes namespace (empty for cluster-wide)"
+            }
+          }
+        }
+      },
+      {
+        "name": "kube-doctor_analyzeNetworkPolicies",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "network",
+          "security"
+        ],
+        "toolReferenceName": "kubeAnalyzeNetworkPolicies",
+        "displayName": "Analyze Network Policies",
+        "modelDescription": "Analyze network policies in a namespace: parse selectors, ingress/egress rules, build allow/deny matrix, and identify pods not covered by any policy. Includes Mermaid flowchart showing allowed traffic flows.",
+        "userDescription": "Analyze network policies and identify uncovered pods.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(shield)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Kubernetes namespace"
+            }
+          },
+          "required": [
+            "namespace"
+          ]
+        }
+      },
+      {
+        "name": "kube-doctor_checkDNSHealth",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "dns"
+        ],
+        "toolReferenceName": "kubeCheckDNSHealth",
+        "displayName": "Check DNS Health",
+        "modelDescription": "Check CoreDNS health: pod status in kube-system, restart counts, and log analysis for error patterns (SERVFAIL, NXDOMAIN, timeouts). Use when investigating DNS resolution failures.",
+        "userDescription": "Check CoreDNS health and analyze DNS error patterns.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(search)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      },
+      {
+        "name": "kube-doctor_diagnoseRequestPath",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "diagnostics",
+          "network"
+        ],
+        "toolReferenceName": "kubeDiagnoseRequestPath",
+        "displayName": "Diagnose Request Path",
+        "modelDescription": "THE FLAGSHIP DIAGNOSTIC TOOL. Trace and diagnose the complete HTTP request path from hostname through Ingress -> Service -> Endpoints -> Pods. Checks health at each layer, resource usage, events. Produces findings, suggested actions, and Mermaid topology + sequence diagrams. Use for any routing, 5xx error, or connectivity issue.",
+        "userDescription": "Trace and diagnose the full HTTP request path through your cluster.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(stethoscope)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "hostname": {
+              "type": "string",
+              "description": "Hostname to trace (e.g. api.example.com)"
+            },
+            "path": {
+              "type": "string",
+              "description": "URL path to trace (e.g. /api/v1). Default: /"
+            },
+            "namespace": {
+              "type": "string",
+              "description": "Namespace to search (empty = all namespaces)"
+            }
+          },
+          "required": [
+            "hostname"
+          ]
+        }
+      },
+      {
+        "name": "kube-doctor_diagnoseService",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "diagnostics"
+        ],
+        "toolReferenceName": "kubeDiagnoseService",
+        "displayName": "Diagnose Service",
+        "modelDescription": "Comprehensive service diagnosis: endpoint health, backing pod status, resource usage, ingress exposure, network policies, events, and Mermaid topology diagram. Use when a service is not behaving as expected.",
+        "userDescription": "Run comprehensive diagnostics on a Kubernetes service.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(stethoscope)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Kubernetes namespace"
+            },
+            "service_name": {
+              "type": "string",
+              "description": "Service name to diagnose"
+            }
+          },
+          "required": [
+            "namespace",
+            "service_name"
+          ]
+        }
+      },
+      {
+        "name": "kube-doctor_clusterHealthOverview",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "diagnostics"
+        ],
+        "toolReferenceName": "kubeClusterHealthOverview",
+        "displayName": "Cluster Health Overview",
+        "modelDescription": "Comprehensive cluster health dashboard: node status with CPU/memory usage, pod health by namespace, service endpoint health, recent warning events, and Mermaid status charts. Use for a quick overall cluster health check.",
+        "userDescription": "Get a comprehensive cluster health dashboard.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(dashboard)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      },
+      {
+        "name": "kube-doctor_analyzeServiceLogs",
+        "tags": [
+          "kubernetes",
+          "kube-doctor",
+          "diagnostics",
+          "logs"
+        ],
+        "toolReferenceName": "kubeAnalyzeServiceLogs",
+        "displayName": "Analyze Service Logs",
+        "modelDescription": "Search pod logs for a deployment for error patterns (errors, exceptions, timeouts, stack traces). Groups and counts error types with per-pod breakdown and sample matching lines. Use when investigating application errors.",
+        "userDescription": "Analyze deployment pod logs for error patterns.",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(output)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Kubernetes namespace"
+            },
+            "deployment_name": {
+              "type": "string",
+              "description": "Deployment name"
+            },
+            "pattern": {
+              "type": "string",
+              "description": "Search pattern (regex). Default: error|exception|fatal|panic|timeout|refused"
+            },
+            "tail_lines": {
+              "type": "number",
+              "description": "Lines per pod (default 200)"
+            }
+          },
+          "required": [
+            "namespace",
+            "deployment_name"
           ]
         }
       }

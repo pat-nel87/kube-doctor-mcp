@@ -18,6 +18,9 @@ import { AnalyzePodSecurityTool } from './security.tools';
 import { ListRBACBindingsTool, AuditNamespaceSecurityTool } from './security_extra.tools';
 import { GetWorkloadDependenciesTool } from './dependencies.tools';
 import { ListFluxKustomizationsTool, ListFluxHelmReleasesTool, ListFluxSourcesTool, ListFluxImagePoliciesTool, DiagnoseFluxKustomizationTool, DiagnoseFluxHelmReleaseTool, DiagnoseFluxSystemTool, GetFluxResourceTreeTool } from './flux.tools';
+import { MapServiceTopologyTool, TraceIngressToBackendTool, ListEndpointHealthTool, AnalyzeServiceConnectivityTool, AnalyzeAllIngressesTool, CheckAGICHealthTool } from './network_analysis.tools';
+import { AnalyzeResourceUsageTool, AnalyzeNodeCapacityTool, AnalyzeResourceEfficiencyTool, AnalyzeNetworkPoliciesTool, CheckDNSHealthTool } from './resource_analysis.tools';
+import { DiagnoseRequestPathTool, DiagnoseServiceTool, ClusterHealthOverviewTool, AnalyzeServiceLogsTool } from './composite_diagnostics.tools';
 
 export function registerAllTools(context: vscode.ExtensionContext): void {
     // Each name MUST match the "name" in package.json contributes.languageModelTools
@@ -97,5 +100,26 @@ export function registerAllTools(context: vscode.ExtensionContext): void {
         vscode.lm.registerTool('kube-doctor_diagnoseFluxHelmRelease', new DiagnoseFluxHelmReleaseTool()),
         vscode.lm.registerTool('kube-doctor_diagnoseFluxSystem', new DiagnoseFluxSystemTool()),
         vscode.lm.registerTool('kube-doctor_getFluxResourceTree', new GetFluxResourceTreeTool()),
+
+        // Network Analysis & Topology
+        vscode.lm.registerTool('kube-doctor_mapServiceTopology', new MapServiceTopologyTool()),
+        vscode.lm.registerTool('kube-doctor_traceIngressToBackend', new TraceIngressToBackendTool()),
+        vscode.lm.registerTool('kube-doctor_listEndpointHealth', new ListEndpointHealthTool()),
+        vscode.lm.registerTool('kube-doctor_analyzeServiceConnectivity', new AnalyzeServiceConnectivityTool()),
+        vscode.lm.registerTool('kube-doctor_analyzeAllIngresses', new AnalyzeAllIngressesTool()),
+        vscode.lm.registerTool('kube-doctor_checkAGICHealth', new CheckAGICHealthTool()),
+
+        // Resource Analysis
+        vscode.lm.registerTool('kube-doctor_analyzeResourceUsage', new AnalyzeResourceUsageTool()),
+        vscode.lm.registerTool('kube-doctor_analyzeNodeCapacity', new AnalyzeNodeCapacityTool()),
+        vscode.lm.registerTool('kube-doctor_analyzeResourceEfficiency', new AnalyzeResourceEfficiencyTool()),
+        vscode.lm.registerTool('kube-doctor_analyzeNetworkPolicies', new AnalyzeNetworkPoliciesTool()),
+        vscode.lm.registerTool('kube-doctor_checkDNSHealth', new CheckDNSHealthTool()),
+
+        // Composite Diagnostics
+        vscode.lm.registerTool('kube-doctor_diagnoseRequestPath', new DiagnoseRequestPathTool()),
+        vscode.lm.registerTool('kube-doctor_diagnoseService', new DiagnoseServiceTool()),
+        vscode.lm.registerTool('kube-doctor_clusterHealthOverview', new ClusterHealthOverviewTool()),
+        vscode.lm.registerTool('kube-doctor_analyzeServiceLogs', new AnalyzeServiceLogsTool()),
     );
 }

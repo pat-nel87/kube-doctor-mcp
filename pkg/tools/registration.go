@@ -22,6 +22,9 @@ func RegisterAll(server *mcp.Server, client *k8s.ClusterClient, fluxClient *flux
 	registerSecurityTools(server, client)
 	registerResourceTools(server, client)
 	registerDiscoveryTools(server, client)
+	registerNetworkAnalysisTools(server, client)
+	registerResourceAnalysisTools(server, client)
+	registerCompositeDiagnosticTools(server, client)
 	if fluxClient != nil {
 		registerFluxTools(server, fluxClient, client)
 	}
